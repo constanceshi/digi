@@ -1,6 +1,7 @@
 import digi
 import digi.data.sync as sync
 import digi.data.util as util
+from digi.data.de_id import hippa
 from digi.data import logger, zed
 from digi.data import flow as flow_lib
 
@@ -102,7 +103,7 @@ class Egress:
             _sync = sync.Sync(
                 sources=[digi.pool.name],
                 in_flow=flow,
-                out_flow=f"{flow_lib.drop_meta} | {flow_lib.refresh_ts}",
+                out_flow=f"{flow_lib.drop_meta} | {flow_lib.refresh_ts} | {flow_lib.anonymize}",
                 dest=f"{digi.pool.name}@{name}",
                 eoio=ig.get("eoio", True),
                 client=zed.Client(),
