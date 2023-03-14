@@ -1,7 +1,6 @@
 """A collection of predefined dataflows."""
 
-from digi.data.de_id import hipaa
-from digi.data.link import link
+from digi.data.de_id import hippa
 
 refresh_ts = """switch ( 
     case has(event_ts) => yield this | put ts := now()

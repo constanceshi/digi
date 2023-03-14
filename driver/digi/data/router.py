@@ -1,8 +1,13 @@
 import digi
 import digi.data.sync as sync
 import digi.data.util as util
+<<<<<<< HEAD
 import digi.data.sourcer as sourcer
 from digi.data import logger, zed, util
+=======
+from digi.data.de_id import hippa
+from digi.data import logger, zed
+>>>>>>> 0ff9b0a (add preliminary de-id rules to flow.py)
 from digi.data import flow as flow_lib
 
 """
@@ -122,7 +127,7 @@ class Egress:
             _sync = sync.Sync(
                 sources=[digi.pool.name],
                 in_flow=flow,
-                out_flow=out_flow,
+                out_flow=f"{flow_lib.drop_meta} | {flow_lib.refresh_ts} | {flow_lib.anonymize}",
                 dest=f"{digi.pool.name}@{name}",
                 eoio=eg.get("eoio", True),
                 client=zed.Client(),
