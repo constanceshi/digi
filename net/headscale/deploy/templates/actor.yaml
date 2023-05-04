@@ -20,6 +20,10 @@ spec:
         name: {{ .Values.name }}
     spec:
       serviceAccountName: {{ .Values.name }}
+      volumes:
+        - name: {{ .Values.name }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.name }}
       containers:
         - name: {{ .Values.name }}
           image: {{ .Values.image }}
@@ -45,8 +49,12 @@ spec:
             value: {{ .Values.lake | default "http://lake:6534" }}
           - name: ZED_LAKE # for backward compatibility TBD deprecate in v0.3
             value: {{ .Values.zed_lake | default "http://lake:6534" }}
-          ports:
-          - containerPort: 9867
+          ports: # https://github.com/juanfont/headscale/blob/main/docs/running-headscale-container.md
+          - containerPort: 8080 # Web UI
+          - containerPort: 9090 # Metrics
+          volumeMounts:
+          - mountPath: /var/lib/headscale/
+            name: {{ .Values.name }}
 
 ---
 
@@ -58,9 +66,53 @@ metadata:
     name: {{ .Values.name }}
     digi.dev/type: kernel
 spec:
-  ports:
-  - port: 6534 # lake
-    targetPort: 9867
+  type: NodePort
+  ports: # headscale
+  - name: web
+    port: 8080
+    targetPort: 8080
+    nodePort: 30100
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    nodePort: 30101
     protocol: TCP
   selector:
     name: {{ .Values.name }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    name: {{ .Values.name }}
+    digi.dev/type: kernel
+spec:
+  storageClassName: manual
+  persistentVolumeReclaimPolicy: Delete
+  capacity:
+    storage: {{ .Values.persistent_volume.size }}
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: {{ .Values.persistent_volume.path }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    name: {{ .Values.name }}
+    digi.dev/type: kernel
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistent_volume.size }}
