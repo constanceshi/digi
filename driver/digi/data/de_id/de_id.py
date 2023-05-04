@@ -1,8 +1,49 @@
+from hipaa import PII as hipaa_PII
+from ccpa import PII as ccpa_PII
 
-def hippa():
+class Deid:
+    def __init__(self, hipaa=True, ccpa=False, exceptions=None):
+        self.hipaa = hipaa
+        self.ccpa = ccpa
+        self.PII = {}
+        if self.hipaa:
+            self.PII = dict(hipaa_PII)
+        if self.ccpa:
+            self.PII.update(ccpa_PII) # TODO, if fields exist in both, ccpa will override, but we want to concatenate instead
+
+    def gen():
+        zed_flow = "yield this"
+        # TODO concatenate all keys in dict with " | " in between
+
+
+
+class Hipaa(Deid):
+    def __init__(self, ):
+
+
+
+def hipaa():
 
     # todo every += creates a new string
     # create an array of keywords and operators?
+
+    # benchmark time, try dropping multiple fields
+    # compare before and after
+
+    # hipaa class 
+    # methods to generate dataflow
+    # hipaa().x().y().gen() -> string
+    # x is shorthand zipcode, fuzz matching
+    # make module extensible
+    # constructor pattern like spark
+    # group them together and drop ssn, to drop all ssn related aliases
+    # like peekaboo modularity
+
+    # general util functions?
+    # dropping field function
+    # fuzzy matching function
+    #    soundex algorithm, checking substrings of the field
+    # condensing into shorter/fewer characters/digits function (keep first n digits)
 
     de_id_operations = ["yield this"]
 
