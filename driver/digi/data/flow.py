@@ -1,8 +1,8 @@
+"""A collection of predefined dataflows."""
+
 from digi.data.de_id import de_id
 from digi.data.link import link
 from digi.data.de_id.util import PII_Fields
-
-"""A collection of predefined dataflows."""
 
 refresh_ts = """switch ( 
     case has(event_ts) => yield this | put ts := now()
