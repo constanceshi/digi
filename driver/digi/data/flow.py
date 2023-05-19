@@ -1,6 +1,7 @@
-"""A collection of predefined dataflows."""
+from digi.data.de_id import de_id
+from digi.data.de_id.util import PII_Fields
 
-from digi.data.de_id import hippa
+"""A collection of predefined dataflows."""
 
 refresh_ts = """switch ( 
     case has(event_ts) => yield this | put ts := now()
@@ -13,6 +14,6 @@ patch_ts = "switch ( case has(ts) => yield this " \
 
 drop_meta = "not __meta"
 
-de_id = ""
+de_id = de_id.De_id(exceptions=PII_Fields["date"]).gen()
 
 link = link.link_flow()

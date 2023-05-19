@@ -112,6 +112,7 @@ class Egress:
                     or eg.get("pause", False):
                 continue
 
+<<<<<<< HEAD
             flow = eg.get("flow", "")
             out_flow = f"{flow_lib.drop_meta} | {flow_lib.refresh_ts}"
             if eg.get("de_id", False):
@@ -120,10 +121,19 @@ class Egress:
                 out_flow += f"| {flow_lib.link}"
 
             # TBD support external sources including external lakes
+=======
+            flow = ig.get("flow", "")
+            
+            if ig.get("de_id", False):
+                out=f"{flow_lib.drop_meta} | {flow_lib.refresh_ts} | {flow_lib.de_id}"
+            else:
+                out=f"{flow_lib.drop_meta} | {flow_lib.refresh_ts}"
+
+>>>>>>> aa02f64 (hipaa de_id rules)
             _sync = sync.Sync(
                 sources=[digi.pool.name],
                 in_flow=flow,
-                out_flow=f"{flow_lib.drop_meta} | {flow_lib.refresh_ts} | {flow_lib.anonymize}",
+                out_flow=out,
                 dest=f"{digi.pool.name}@{name}",
                 eoio=eg.get("eoio", True),
                 client=zed.Client(),
