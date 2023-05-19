@@ -1,4 +1,5 @@
 from digi.data.de_id import de_id
+from digi.data.link import link
 from digi.data.de_id.util import PII_Fields
 
 """A collection of predefined dataflows."""
@@ -16,4 +17,4 @@ drop_meta = "not __meta"
 
 de_id = de_id.De_id(exceptions=PII_Fields["date"]).gen()
 
-link = link.link_flow()
+link = link.link_flow

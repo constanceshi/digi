@@ -1,6 +1,7 @@
+# dict of PII categories to possible data fields
 PII_Fields = {
     "name": ["name", "first_name", "last_name"],
-    "geography": ["zipcode", "zip"], # TODO how to deal with different fields within a category requiring different processing, i.e. keep state or larger, or should we just separate these fields out in PII_fields? should PII_fields just be a list?
+    "geography": ["zipcode", "zip"], # TODO add logic to deal with different fields within a category requiring different processing, i.e. keep state or larger, or should we just separate these fields out in PII_fields? should PII_fields just be a list?
     # "location", "address", "city", "county", "region"
     "date": ["date", "time", "year", "ts"],
     "phone": ["phone", "phone_number", "fax", "fax_number"],
@@ -16,16 +17,11 @@ PII_Fields = {
     "ip": ["ip", "tcp", "ip_address"],
     "biometric": ["biometric", "biometric_identifier", "fingerprint", "voice_print"],
     "image": ["image", "photo", "photograph", "face"]
-    # TODO when to do fuzzy matching in the analytics engine, soundex
+    # TODO when to do fuzzy matching in the analytics engine, soundex library
 }
 
-order_of_operations = ["drop", "replace", "trim"]
-# map de-id operation to zed command separator
-operators = {
-    "drop": ", ", 
-    "replace": " | ",
-    "trim": ", "
-}
+# list of dictionaries mapping de-id operations to zed command separators
+operations = [{"drop": ", "}, {"replace": " | "}, {"trim": ", "}]
 
 def drop(field):
     """Returns a Zed expression to drop the field FIELD.
@@ -43,4 +39,4 @@ def trim(field, digits):
 
 def replace(field, criteria, value):
     """Returns a Zed command to replace the field FIELD with VALUE if CRITERIA is met"""
-    return f"switch ( case {criteria(field)} => put {field}:={value} default => yield this )" # TODO remove switch and parentheses
+    return f"switch ( case {criteria(field)} => put {field}:={value} default => yield this )"

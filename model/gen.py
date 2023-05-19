@@ -188,13 +188,12 @@ properties:
     type: boolean
   pause:
     type: boolean
-<<<<<<< HEAD
   desc:
     type: string
-=======
   de_id:
     type: boolean
->>>>>>> aa02f64 (hipaa de_id rules)
+  link:
+    type: boolean
 type: object
 """
 
