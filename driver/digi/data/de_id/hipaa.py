@@ -7,7 +7,7 @@ Defines the PII Fields relevant to the HIPAA Privacy Rule mapped to Zed function
 # TODO fuzzy matching
 # TODO if field is substring of field, do the same function
 
-SMALL_POP_ZIPCODES = [] # TODO
+SMALL_POP_ZIPCODES = ["036", "059", "063", "102", "203", "556", "692", "790", "821", "823", "830", "831", "878", "879", "884", "890", "893"]
 
 # dictionary of dictionaries, mapping operation to a list of { fields to Zed commands }
 PII = {}
